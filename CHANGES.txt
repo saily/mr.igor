@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Unreleased
+
+- Flake8 cleanup [saily]
+
 2013/10/05
 
 - Released version 1.4. [davisagli]

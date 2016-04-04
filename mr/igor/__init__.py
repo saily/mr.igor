@@ -1,18 +1,22 @@
-import sys
-import os
-import fileinput
-import pyflakes
-import _ast
 from mr.igor.checker import ImportChecker
+import _ast
+import fileinput
+import os
+import pyflakes
+import sys
+
 
 def check(fname, output):
-    """ Check a file's imports and output missing imports using the output function. """
+    """ Check a file's imports and output missing imports using the
+        output function.
+    """
+
     if os.path.exists(fname):
         codestring = file(fname, 'U').read() + '\n'
     else:
         print >> sys.stderr, '%s: no such file' % fname
         return 1
-        
+
     try:
         tree = compile(codestring, fname, "exec", _ast.PyCF_ONLY_AST)
     except (SyntaxError, IndentationError):
@@ -49,6 +53,7 @@ def check(fname, output):
         else:
             output('', fname)
 
+
 def print_output(imports, fname):
     """ Outputs by printing the modified file to stdout. """
     in_initial_comments = True
@@ -59,29 +64,32 @@ def print_output(imports, fname):
                 sys.stdout.write(imports)
         sys.stdout.write(line)
 
+
 def null_output(imports, fname):
     pass
+
 
 def edit_inplace(imports, fname):
     """ Outputs by modifying file inplace. """
     # rewrite file inline
     in_initial_comments = True
-    for i, line in enumerate(fileinput.input(fname, inplace = 1)):
+    for i, line in enumerate(fileinput.input(fname, inplace=1)):
         if in_initial_comments:
             if not line.startswith('#'):
                 in_initial_comments = False
                 sys.stdout.write(imports)
         sys.stdout.write(line)
 
+
 def main(*args):
     args = list(args)
     if not len(args):
         args = sys.argv[1:]
-    
+
     if not len(args) or args[0:1] in (['-h'], ['--help']):
         print_help()
         return 1
-    
+
     if args[0:1] == ['--print']:
         args = args[1:]
         output = print_output
@@ -90,7 +98,7 @@ def main(*args):
         output = null_output
     else:
         output = edit_inplace
-        
+
     try:
         fname = args[0]
     except IndexError:
@@ -98,6 +106,7 @@ def main(*args):
         return 1
 
     return check(fname, output=output)
+
 
 def print_help():
     print >> sys.stderr, """

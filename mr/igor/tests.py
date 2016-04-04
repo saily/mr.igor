@@ -1,19 +1,21 @@
-import os
-import sys
-import shelve
-import shutil
-import tempfile
-import unittest
+from mr.igor import checker
+from mr.igor import main as igor
 from StringIO import StringIO
 
-from mr.igor import main as igor
-from mr.igor import checker
+import os
+import shelve
+import shutil
+import sys
+import tempfile
+import unittest
+
 
 # shelve may use a physical filename other than the base filename (e.g.
 # mr.igor.db). So we can forcibly delete it, create the file inside a
 # trashable directory with a guaranteed name.
 checker.IMPORT_DB_BASE_FILENAME += '.test.d/mr.igor'
 TEST_DB_DIRNAME = checker.IMPORT_DB_BASE_FILENAME[:-len('/mr.igor')]
+
 
 class TestIgor(unittest.TestCase):
     """ Functional test for Igor. """
@@ -102,13 +104,12 @@ class TestIgor(unittest.TestCase):
         f.write('# -*- coding: utf8 -*-\nbar\nbaz\n')
         f.close()
 
-        expected = "# -*- coding: utf8 -*-\nfrom foo import bar\nfrom foo import baz\nbar\nbaz\n"
+        expected = "# -*- coding: utf8 -*-\nfrom foo import bar\nfrom foo import baz\nbar\nbaz\n"  # noqa
 
         igor(self.filename)
         f = open(self.filename)
         self.assertEqual(f.read(), expected)
         f.close()
-
 
     def tearDown(self):
         shutil.rmtree(TEST_DB_DIRNAME)

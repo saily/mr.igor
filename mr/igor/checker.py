@@ -1,8 +1,11 @@
-import os
-import shelve
 from pyflakes.checker import Checker
 
+import os
+import shelve
+
+
 IMPORT_DB_BASE_FILENAME = os.path.join(os.path.expanduser('~'), '.mr.igor')
+
 
 class ImportChecker(Checker):
     """ Subclass of the checker from pyflakes that knows how to keep track of
