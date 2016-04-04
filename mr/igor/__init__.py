@@ -12,9 +12,9 @@ def check(fname, output):
     """
 
     if os.path.exists(fname):
-        codestring = file(fname, 'U').read() + '\n'
+        codestring = open(fname, 'U').read() + '\n'
     else:
-        print >> sys.stderr, '%s: no such file' % fname
+        print('%s: no such file' % fname, file=sys.stderr)
         return 1
 
     try:
@@ -30,13 +30,13 @@ def check(fname, output):
             try:
                 (lineno, offset, line) = value[1][1:]
             except IndexError:
-                print >> sys.stderr, 'could not compile %r' % (fname,)
+                print('could not compile %r' % fname, file=sys.stderr)
                 return 1
             if line.endswith("\n"):
                 line = line[:-1]
-            print >> sys.stderr, '%s:%d: could not compile' % (fname, lineno)
-            print >> sys.stderr, line
-            print >> sys.stderr, " " * (offset-2), "^"
+            print('%s:%d: could not compile' % (fname, lineno), file=sys.stderr)  # noqa
+            print(line, file=sys.stderr)
+            print(" " * (offset-2), "^", file=sys.stderr)
     else:
         imports = set()
 
@@ -102,17 +102,17 @@ def main(*args):
     try:
         fname = args[0]
     except IndexError:
-        print >> sys.stderr, "Expected filename."
+        print("Expected filename.", sys.stderr)
         return 1
 
     return check(fname, output=output)
 
 
 def print_help():
-    print >> sys.stderr, """
+    print("""
 Igor records your imports and adds missing imports for names it recognizes.
 Usage: igor [--print] filename
 
   --print  Causes Igor to write the modified file to stdout rather than
            making changes inplace.
-"""
+""", sys.stderr)

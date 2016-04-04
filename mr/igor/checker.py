@@ -48,5 +48,5 @@ class ImportChecker(Checker):
                 if count > max:
                     max = count
                     max_source = source
-            #print "Found import. Source: %s. Name: %s" % (max_source, name)
+            # print("Found import. Source: %s. Name: %s" % (max_source, name))
             return "from %s import %s" % (max_source, name)

@@ -3,6 +3,7 @@ Changelog
 
 Unreleased
 
+- Add python3 support [saily]
 - Flake8 cleanup [saily]
 
 2013/10/05
