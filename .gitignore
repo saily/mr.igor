@@ -1,2 +1,7 @@
-/*.egg-info
 *.py?
+/*.egg-info
+/.Python
+/bin
+/include
+/lib
+/pip-selfcheck.json
